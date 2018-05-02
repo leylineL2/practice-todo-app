@@ -20,6 +20,9 @@
     background-color: #0AA;
     padding: 50px 0;
 }
+.li-list p{
+    padding: 50px 0;
+}
 
 .fix-text{
     background-color: #F00;
@@ -27,6 +30,6 @@
 }
 
 .modify-li {
-    background-color: #F00;
+    background-color: rgb(255, 81, 0);
     padding: 50px 0;
 }
