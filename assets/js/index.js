@@ -1,9 +1,10 @@
 $(function (){
     $("#add-btn").on("click",()=>{
-        $(".todo-list").prepend(`<li class="li-list">
-        <p>${$("#message-txt").val()}</p>
-        <button class="del-li">del</button> 
-        <button class="edit-li">edit</button></li>`);
+            if($("#message-txt").val() !== ""){
+            $(".todo-list").prepend(`<li class="li-list">
+            <p>${$("#message-txt").val()}</p>
+            <button class="del-li">delete</button> </li>`);
+        }
     });
 
 
@@ -11,15 +12,16 @@ $(function (){
         
         $(event.currentTarget).parent().remove();
     });
-    $(".todo-list").on("click",".edit-li",(event)=>{
+    $(".todo-list").on("click",".li-list p",(event)=>{
         let textF = $(event.currentTarget).parent().children("p").html();        
         let liEl = $(event.currentTarget).parent();
         $(event.currentTarget).parent().empty();
         console.log($(event.currentTarget).parent())
         liEl.prepend(`
         <input type="text" class="fix-text" value="${textF}">
+        <button class="modify-li">change</button>
         <button class="del-li">del</button> 
-        <button class="modify-li">change</button>`);
+        `);
     });
     $(".todo-list").on("click",".modify-li",(event)=>{
         console.log($(event.currentTarget).parent())
@@ -30,7 +32,9 @@ $(function (){
         // console.log($(event.currentTarget).parent())
         liEl.prepend(`
         <p>${textF}</p>
-        <button class="del-li">del</button> 
-        <button class="edit-li">edit</button>`);
+        <button class="del-li">delete</button> `);
+        if(textF===""){
+            liEl.remove();
+        }
     });
 });

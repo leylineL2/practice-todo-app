@@ -1,0 +1,32 @@
+.list-info {
+    display: flex;
+    text-decoration: none;
+    list-style: none;
+}
+
+.li-list {
+    display:inline-flex;
+    background-color: #0055FF;
+    /* display: flex; */
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: space-around;
+    margin: 20px;
+}
+
+.del-li {
+    background-color: #0AA;
+    padding: 50px 0;
+}
+
+.fix-text{
+    background-color: #F00;
+    padding: 50px 0;
+}
+
+.modify-li {
+    background-color: #F00;
+    padding: 50px 0;
+}
