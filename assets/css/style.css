@@ -7,6 +7,7 @@
     display: flex;
     text-decoration: none;
     list-style: none;
+    justify-content: space-around;
 }
 .header-list{
     margin: 1% 1%;
@@ -22,7 +23,7 @@
 }
 
 .header-list #message-txt {
-    padding: 1% 1%;
+    padding: 1% 1% auto auto;
     background-color: rgba(15, 4, 112, 0.568);
 }
 
@@ -30,6 +31,7 @@
     display: flex;
     text-decoration: none;
     list-style: none;
+    justify-content: space-around;
 }
 
 .li-list {
@@ -44,7 +46,7 @@
     margin: 15px 0;
     margin-left: 5%;
     margin-right: 5%;
-    overflow: hidden;
+    /* overflow: hidden; */
     
 }
 
