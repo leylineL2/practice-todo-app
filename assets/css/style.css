@@ -3,6 +3,29 @@
     font-family: "Rounded Mplus 1c";
 }
 
+.header-list {
+    display: flex;
+    text-decoration: none;
+    list-style: none;
+}
+.header-list{
+    margin: 1% 1%;
+}
+.header-list #add-btn {
+    padding: 1% 1%;
+    background-color: rgb(185, 6, 221);
+}
+
+.header-list #allclear-btn {
+    padding: 1% 1%;
+    background-color: rgba(247, 0, 0, 0.425);
+}
+
+.header-list #message-txt {
+    padding: 1% 1%;
+    background-color: rgba(15, 4, 112, 0.568);
+}
+
 .list-info {
     display: flex;
     text-decoration: none;
