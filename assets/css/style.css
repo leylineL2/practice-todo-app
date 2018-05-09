@@ -19,16 +19,16 @@
 
 .header-list #allclear-btn {
     padding: 1% 1%;
-    background-color: rgba(247, 0, 0, 0.425);
+    background-color: rgb(190, 0, 0);
 }
 
 .header-list #message-txt {
     padding: 1% 1% auto auto;
-    background-color: rgba(15, 4, 112, 0.568);
+    background-color: rgba(145, 101, 226, 0.658);
 }
 
 .list-info {
-    display: flex;
+    display: inline-flex;
     text-decoration: none;
     list-style: none;
     justify-content: space-around;
@@ -38,8 +38,8 @@
     display:inline-flex;
     background-color: #0055FF;
     /* display: flex; */
-    flex-direction: row;
-    flex-wrap: wrap;
+    /* flex-direction: row; */
+    /* flex-wrap: wrap; */
     justify-content: space-between;
     align-items: center;
     align-content: space-around;
