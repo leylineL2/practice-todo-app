@@ -22,9 +22,11 @@ $(function (){
         $(event.currentTarget).parent().remove();
         setLiItems();
     });
-    
 
+    
     $(".todo-list").on("click",".li-list p",(event)=>{
+        // console.log($(event.currentTarget).parent().parent());
+        // console.log($(event.currentTarget).parent().index());
         let textF = $(event.currentTarget).parent().children("p").html();        
         let liEl = $(event.currentTarget).parent();
         $(event.currentTarget).parent().empty();
@@ -34,22 +36,25 @@ $(function (){
         <button class="modify-li">change</button>
         <button class="del-li">del</button> 
         `);
-        setLiItems();
+        // setLiItems();
     });
     $(".todo-list").on("click",".modify-li",(event)=>{
-        console.log($(event.currentTarget).parent())
+        console.log($("li.li-list").index($(event.currentTarget).parent()))
         let textF = $(event.currentTarget).parent().children(".fix-text").val();     
-        console.log($(event.currentTarget).parent().children())   
+        console.log($(event.currentTarget).parent().children());
+        i = $("li.li-list").index($(event.currentTarget).parent())
         let liEl = $(event.currentTarget).parent();
         $(event.currentTarget).parent().empty();
         // console.log($(event.currentTarget).parent())
         liEl.prepend(`
         <p>${textF}</p>
         <button class="del-li">delete</button> `);
+        console.log($("li.li-list").index($(event.currentTarget).parent()));
         if(textF===""){
             liEl.remove();
+            console.log($("li.li-list").index($(event.currentTarget).parent()));
         }
-        setLiItems();
+        setLiItem(i,textF);
     });
 
 });
@@ -57,10 +62,20 @@ function setLiItems(){
     let array =[];
     $(".li-list").children();
     for(let text of $(".li-list").children("p")){
-        console.log(text);
-        console.log(text.textContent);
         array.push(text.textContent);
     }
+    console.log(array);
+    window.localStorage.setItem('todo', array.toString());
+}
+function setLiItem(i,fixText){
+    var str = window.localStorage.getItem('todo');
+    let array = str.split(",");
+    if(fixText === ""){
+        array.splice(i,1);
+    }else{
+        array[i] = fixText;
+    }
+    // array.push(text.textContent);
     console.log(array);
     window.localStorage.setItem('todo', array.toString());
 }
@@ -76,6 +91,5 @@ function getLiItems(){
             <p>${text}</p>
             <button class="del-li">delete</button> </li>`);
         }
-    }   
-    
+    }
 }
