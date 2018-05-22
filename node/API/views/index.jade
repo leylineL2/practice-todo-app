@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  script(src="https://code.jquery.com/jquery-3.3.1.js")
+  script(src="javascripts/main.js")
+  h1= title
+  p Welcome to #{title}
+  p 名前
+  input(type="text", name="input-name")
+  p 年齢
+  input(type="text", name="input-age")
+  input(id="regist-btn", type="submit", value="ok")
+  input(type="button", name="update-text",value="update")
+  input(type="button", name="delete-text",value="delete")
+  p 検索
+  input(type="text", name="search-text")
+
+  input(id="search-btn", type="button", value="search")
+  h2 title
+  div.search-result 結果

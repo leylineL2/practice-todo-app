@@ -1,95 +1,153 @@
+function getLiItems() {
+    
+    $.ajax({
+        type:"GET",
+        url: "/todo",
+    })
+    .done((res) =>{
+        console.log(res)
+        
+        for(let doc of res){
+            let liList = $("<li>").addClass("li-list")
+            liList.append($("<p>").text(`${doc.todoData}`));
+            liList.append($("<button>").addClass("del-li").text("delete"));
+            liList.append($("<input>").addClass("mongo_id").attr("type","hidden").val(`${doc._id}`));
+            $(".todo-list").prepend(liList);
+        }
+    });
+
+}
+
+function setLiItem(addText){
+    if(addText !== ""){
+        // array.splice(i,1);
+        const reqJson ={
+            data :addText,
+        };
+        $.ajax({
+            type:"POST",
+            url: "/todo",
+            data: reqJson,
+            dataType: "json"
+        })
+        .done((res) =>{
+            console.log(res)
+            // return res;
+            let liList = $("<li>").addClass("li-list")
+            liList.append($("<p>").text(`${res.todoData}`));
+            liList.append($("<button>").addClass("del-li").text("delete"));
+            liList.append($("<input>").addClass("mongo_id").attr("type","hidden").val(`${res._id}`));
+            $(".todo-list").prepend(liList);
+        });
+    }
+}
+
+function updateLiItem(_id,fixText){
+    console.log(_id)
+    if(fixText !== "" && _id !==""){
+        // array.splice(i,1);
+        const reqJson ={
+            data: fixText,
+            _id: _id,
+        };
+        $.ajax({
+            type:"PUT",
+            url: "/todo",
+            data: reqJson,
+            dataType: "json"
+        })
+        .done((res) =>{
+            return res.body;
+        });
+    }
+    // array.push(text.textContent);
+}
+
+function deleteLiItem(_id) {
+    const reqJson ={
+        _id: _id,
+    };
+    $.ajax({
+        type:"DELETE",
+        url: "/todo",
+        data: reqJson,
+        dataType: "json",
+    })
+    .done((res) =>{
+    });
+
+}
+
 $(function (){
     // window.localStorage.getItem('todo');
     // window.localStorage.setItem('todo', '');
     getLiItems();
-    
+
     $("#add-btn").on("click",()=>{
-            if($("#message-txt").val() !== ""){
-            $(".todo-list").prepend(`<li class="li-list">
-            <p>${$("#message-txt").val()}</p>
-            <button class="del-li">delete</button> </li>`);
-            setLiItems();
+        if($("#message-txt").val() !== ""){
+            setLiItem($("#message-txt").val());
         }
     });
-    $("#allclear-btn").on("click",()=>{
+    $("#all-clear-btn").on("click",()=>{
+        console.log($(".mongo_id"));
+        for(let mongo_id of $(".mongo_id")){
+            deleteLiItem($(mongo_id).val())
+        }
         $(".todo-list").empty();
-        setLiItems();
     });
 
 
 
     $(".todo-list").on("click",".del-li",(event)=>{
+        let _id = $(event.currentTarget).parent().children(".mongo_id").val();
+        deleteLiItem(_id);
+        deleteLiItem($(event.currentTarget).parent().children(".mongo_id").val());
+        console.log($(event.currentTarget).parent());
         $(event.currentTarget).parent().remove();
-        setLiItems();
     });
 
-    
-    $(".todo-list").on("click",".li-list p",(event)=>{
-        // console.log($(event.currentTarget).parent().parent());
-        // console.log($(event.currentTarget).parent().index());
+
+    $(".todo-list").on("click",".li-list p",".mongo_id",(event)=>{
         let textF = $(event.currentTarget).parent().children("p").html();        
         let liEl = $(event.currentTarget).parent();
-        $(event.currentTarget).parent().empty();
+        let _id = $(event.currentTarget).parent().children(".mongo_id").val()
+        console.log($(event.currentTarget).parent().children(".mongo_id").val())
+        console.log($(event.currentTarget).parent().children(".mongo_id"))
         console.log($(event.currentTarget).parent())
-        liEl.prepend(`
-        <input type="text" class="fix-text" value="${textF}">
-        <button class="modify-li">change</button>
-        <button class="del-li">del</button> 
-        `);
-        // setLiItems();
+        $(event.currentTarget).parent().empty();
+        // $("<input>")
+        liEl.append($("<input>").addClass("fix-text").val(`${textF}`));
+        liEl.append($("<button>").addClass("modify-li").text("change"));
+        liEl.append($("<input>").addClass("mongo_id").attr("type","hidden").val(`${_id}`));
+        // liEl.prepend(`
+        // <input type="text" class="fix-text" value="">
+        // <button class="modify-li">change</button>
+        // <button class="del-li">del</button> 
+        // <input class="mongo_id", type="hidden",value="">
+        // `);
     });
     $(".todo-list").on("click",".modify-li",(event)=>{
         console.log($("li.li-list").index($(event.currentTarget).parent()))
         let textF = $(event.currentTarget).parent().children(".fix-text").val();     
-        console.log($(event.currentTarget).parent().children());
-        i = $("li.li-list").index($(event.currentTarget).parent())
+        let _id = $(event.currentTarget).parent().children(".mongo_id").val();
         let liEl = $(event.currentTarget).parent();
-        $(event.currentTarget).parent().empty();
-        // console.log($(event.currentTarget).parent())
-        liEl.prepend(`
-        <p>${textF}</p>
-        <button class="del-li">delete</button> `);
-        console.log($("li.li-list").index($(event.currentTarget).parent()));
+        console.log(liEl);
+        console.log(typeof textF)
+        console.log(textF === "")
         if(textF===""){
-            liEl.remove();
-            console.log($("li.li-list").index($(event.currentTarget).parent()));
+            deleteLiItem(_id);
+            $(event.currentTarget).parent().remove();
+            // console.log($("li.li-list").index($(event.currentTarget).parent()));
         }
-        setLiItem(i,textF);
+        else{
+            updateLiItem(_id,textF);
+            $(event.currentTarget).parent().empty();
+            // console.log($(event.currentTarget).parent())
+            liEl.append($("<p>").text(`${textF}`));
+            liEl.append($("<button>").addClass("del-li").text("delete"));
+            liEl.append($("<input>").addClass("mongo_id").attr("type","hidden").val(`${_id}`));
+        }
+
     });
 
-});
-function setLiItems(){
-    let array =[];
-    $(".li-list").children();
-    for(let text of $(".li-list").children("p")){
-        array.push(text.textContent);
-    }
-    console.log(array);
-    window.localStorage.setItem('todo', array.toString());
-}
-function setLiItem(i,fixText){
-    var str = window.localStorage.getItem('todo');
-    let array = str.split(",");
-    if(fixText === ""){
-        array.splice(i,1);
-    }else{
-        array[i] = fixText;
-    }
-    // array.push(text.textContent);
-    console.log(array);
-    window.localStorage.setItem('todo', array.toString());
-}
-function getLiItems(){
-    var str = window.localStorage.getItem('todo');
-
-    
-    if(str !== null || str !== ""){
-        let array = str.split(",");
-        console.log(array);
-        for(let text of array.reverse()){
-            $(".todo-list").prepend(`<li class="li-list">
-            <p>${text}</p>
-            <button class="del-li">delete</button> </li>`);
-        }
-    }
-}
+})
